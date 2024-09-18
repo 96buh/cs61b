@@ -39,14 +39,37 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
         }
     }
 
-    public static void main(String[] args) {
-        Deque61B<String> S = new LinkedListDeque61B<>();
-        S.addLast("first");
-        S.addLast("middle");
-        S.addLast("back");
-        for (String i : S) {
-            System.out.println(i);
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof LinkedListDeque61B<?> otherLinkedList) {
+            if (this.size != otherLinkedList.size) {
+                return false;
+            }
+            Iterator it1 = this.iterator();
+            Iterator it2 = otherLinkedList.iterator();
+            while(it1.hasNext() && it2.hasNext()) {
+                if (it1.next() != it2.next()) {
+                    return false;
+                }
+            }
+            return true;
         }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Deque61B<String> S1 = new LinkedListDeque61B<>();
+        Deque61B<String> S2 = new LinkedListDeque61B<>();
+
+        S1.addLast("first");
+        S1.addLast("middle");
+        S1.addLast("back");
+
+        S2.addLast("back");
+        S2.addLast("middle");
+        S2.addLast("first");
+        boolean output = S1.equals(S2);
+        System.out.println(output);
     }
 
     public class Node {

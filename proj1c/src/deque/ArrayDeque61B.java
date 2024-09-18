@@ -199,7 +199,7 @@ public class ArrayDeque61B<T> implements Deque61B {
 
     public static void main(String[] args) {
         Deque61B<String> S = new ArrayDeque61B<>();
-        S.addLast("First");
+        S.addLast("front");
         S.addLast("middle");
         S.addLast("back");
         for (Object i : S) {
