@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ArrayDeque61B<T> implements Deque61B {
+public class ArrayDeque61B<T> implements Deque61B<T> {
     private int nextFirst;
     private int nextLast;
     private T[] items;
@@ -112,7 +112,7 @@ public class ArrayDeque61B<T> implements Deque61B {
     }
 
     @Override
-    public Object removeFirst() {
+    public T removeFirst() {
         if (size == 0) {
             return null;
         }
@@ -132,7 +132,7 @@ public class ArrayDeque61B<T> implements Deque61B {
     }
 
     @Override
-    public Object removeLast() {
+    public T removeLast() {
         if (size == 0) {
             return null;
         }
@@ -154,7 +154,7 @@ public class ArrayDeque61B<T> implements Deque61B {
     }
 
     @Override
-    public Object get(int index) {
+    public T get(int index) {
         if (nextFirst + 1 + index >= items.length) {
             int a = Math.floorMod(nextFirst + 1 + index, items.length);
             return items[a];
@@ -197,12 +197,36 @@ public class ArrayDeque61B<T> implements Deque61B {
         }
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other instanceof ArrayDeque61B<?> otherArrayList) {
+            if (this.size != otherArrayList.size) {
+                return false;
+            }
+            for (int i = 0; i < size; i++) {
+                if (this.items[i] != otherArrayList.items[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
-        Deque61B<String> S = new ArrayDeque61B<>();
-        S.addLast("front");
-        S.addLast("middle");
-        S.addLast("back");
-        for (Object i : S) {
+        Deque61B<String> S1 = new ArrayDeque61B<>();
+        S1.addLast("front");
+        S1.addLast("middle");
+        S1.addLast("back");
+
+        Deque61B<String> S2 = new ArrayDeque61B<>();
+        S2.addLast("front");
+        S2.addLast("middle");
+        S2.addLast("back");
+        for (Object i : S2) {
             System.out.println(i);
         }
     }

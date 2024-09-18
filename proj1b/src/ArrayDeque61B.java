@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArrayDeque61B<T> implements Deque61B {
+public class ArrayDeque61B<T> implements Deque61B<T> {
     private int nextFirst;
     private int nextLast;
     private T[] items;
@@ -109,7 +109,7 @@ public class ArrayDeque61B<T> implements Deque61B {
     }
 
     @Override
-    public Object removeFirst() {
+    public T removeFirst() {
         if (size == 0) {
             return null;
         }
@@ -129,7 +129,7 @@ public class ArrayDeque61B<T> implements Deque61B {
     }
 
     @Override
-    public Object removeLast() {
+    public T removeLast() {
         if (size == 0) {
             return null;
         }
@@ -151,7 +151,7 @@ public class ArrayDeque61B<T> implements Deque61B {
     }
 
     @Override
-    public Object get(int index) {
+    public T get(int index) {
         if (nextFirst + 1 + index >= items.length) {
             int a = Math.floorMod(nextFirst + 1 + index, items.length);
             return items[a];
