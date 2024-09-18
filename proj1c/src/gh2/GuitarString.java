@@ -25,7 +25,8 @@ public class GuitarString {
         //       better accuracy, use the Math.round() function before casting.
         //       Your should initially fill your buffer with zeros.
         capacity = (int) Math.round(SR / frequency);
-        buffer = new ArrayDeque61B<>();
+        buffer = new ArrayDeque61B<>(capacity);
+//        buffer = new LinkedListDeque61B<>();
         for (int i = 0; i < capacity; i++) {
             buffer.addLast(0.0);
         }
@@ -56,7 +57,8 @@ public class GuitarString {
         //       the average of the two multiplied by the DECAY factor.
         //       **Do not call StdAudio.play().**
 
-        double first = buffer.removeFirst();
+        double first = buffer.get(0);
+        buffer.removeFirst();
         double average = (first + buffer.get(0)) * 0.5 * DECAY;
         buffer.addLast(average);
     }

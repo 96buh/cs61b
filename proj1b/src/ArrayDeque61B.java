@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
             nextFirst -= 1;
         }
 
+
         size += 1;
     }
 
@@ -37,7 +40,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
             resize(size * 2);
         }
         items[nextLast] = x;
-        if (nextLast + 1 == items.length) {
+        if (nextLast + 1 >= items.length) {
             nextLast = Math.floorMod(nextLast + 1, items.length);
         } else {
             nextLast += 1;

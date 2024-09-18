@@ -11,18 +11,19 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     private int size;
 
     public ArrayDeque61B() {
-        this(1);
+        this(8);
     }
+
     public ArrayDeque61B(int capacity) {
         size = 0;
         items = (T[]) new Object[capacity];
-        nextFirst = 4;
-        nextLast = 5;
+        nextFirst = 0;
+        nextLast = 1;
     }
 
     @Override
     public void addFirst(T x) {
-        if (size == items.length) {
+        if (size >= items.length) {
             resize(size * 2);
         }
 
@@ -48,9 +49,9 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
         } else {
             nextLast += 1;
         }
-
         size += 1;
     }
+
 
     @Override
     public List toList() {
@@ -177,28 +178,31 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 
     private class ArrayListIterator implements Iterator<T> {
         private int witPos;
-        private int counter;
+        private int remaining;
 
         public ArrayListIterator() {
-            witPos = nextFirst + 1;
-            counter = 0;
+            // 设置起始位置
+            witPos = (nextFirst + 1) % items.length;
+            remaining = size;
         }
+
         @Override
         public boolean hasNext() {
-            return counter < size;
+            return remaining > 0;
         }
 
         @Override
         public T next() {
-            if (witPos + 1 == items.length) {
-                witPos = Math.floorMod(witPos + 1, items.length);
+            if (remaining <= 0) {
+                return null;
             }
             T returnItem = items[witPos];
-            witPos += 1;
-            counter += 1;
+            witPos = (witPos + 1) % items.length;
+            remaining--;
             return returnItem;
         }
     }
+
 
     @Override
     public boolean equals(Object other) {
@@ -208,7 +212,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
             }
             Iterator<T> it1 = this.iterator();
             Iterator<?> it2 = otherArrayList.iterator();
-            while(it1.hasNext() && it2.hasNext()) {
+            while (it1.hasNext() && it2.hasNext()) {
                 if (it1.next() != it2.next()) {
                     return false;
                 }

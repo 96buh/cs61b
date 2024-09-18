@@ -71,6 +71,31 @@ public class ArrayDeque61BTest {
     }
 
     @Test
+    public void fourValueTest() {
+        Deque61B<Integer> lst = new ArrayDeque61B<>();
+        lst.addLast(1);
+        lst.addLast(2);
+        lst.addLast(3);
+        lst.addLast(4);
+        assertThat(lst.toList()).containsExactly(1,2,3,4).inOrder();
+        lst.removeFirst();
+        lst.addLast(100);
+        assertThat(lst.toList()).containsExactly(2,3,4,100).inOrder();
+        lst.removeFirst();
+        lst.addLast(200);
+        assertThat(lst.toList()).containsExactly(3,4,100,200).inOrder();
+        lst.removeFirst();
+        lst.addLast(300);
+        assertThat(lst.toList()).containsExactly(4,100,200,300).inOrder();
+        lst.removeFirst();
+        lst.addLast(400);
+        assertThat(lst.toList()).containsExactly(100,200,300,400).inOrder();
+        lst.removeFirst();
+        lst.addLast(10);
+        assertThat(lst.toList()).containsExactly(200,300,400,10).inOrder();
+    }
+
+    @Test
     public void sizeTest() {
         Deque61B<Integer> lst = new ArrayDeque61B<>();
         lst.addLast(1); // [1]
