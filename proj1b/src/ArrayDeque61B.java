@@ -9,22 +9,22 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 
     public ArrayDeque61B() {
         size = 0;
-        items = (T[]) new Object[8];
-        nextFirst = 4;
-        nextLast = 5;
+        items = (T[]) new Object[4];
+        nextFirst = 0;
+        nextLast = 1;
     }
 
     @Override
-    public void addFirst(Object x) {
+    public void addFirst(T x) {
         if (size == items.length) {
             resize(size * 2);
         }
 
         if (nextFirst - 1 < 0) {
-            items[nextFirst] = (T) x;
+            items[nextFirst] = x;
             nextFirst = Math.floorMod(nextFirst - 1, items.length);
         } else {
-            items[nextFirst] = (T) x;
+            items[nextFirst] = x;
             nextFirst -= 1;
         }
 
@@ -32,11 +32,11 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     }
 
     @Override
-    public void addLast(Object x) {
+    public void addLast(T x) {
         if (size == items.length) {
             resize(size * 2);
         }
-        items[nextLast] = (T) x;
+        items[nextLast] = x;
         if (nextLast + 1 == items.length) {
             nextLast = Math.floorMod(nextLast + 1, items.length);
         } else {

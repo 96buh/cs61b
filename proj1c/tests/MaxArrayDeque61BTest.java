@@ -1,3 +1,4 @@
+import org.apache.commons.collections.comparators.ComparableComparator;
 import org.junit.jupiter.api.*;
 
 import java.util.Comparator;
@@ -21,4 +22,23 @@ public class MaxArrayDeque61BTest {
         mad.addFirst("fury road");
         assertThat(mad.max()).isEqualTo("fury road");
     }
+
+
+    @Test
+    public void integerTest() {
+        MaxArrayDeque61B<Integer> m = new MaxArrayDeque61B<Integer>(Comparator.naturalOrder());
+        assertThat(m.max()).isEqualTo(null);
+        m.addLast(100);
+        m.addLast(2);
+        m.addLast(34);
+        assertThat(m.max()).isEqualTo(100);
+        m.addFirst(500);
+        assertThat(m.max()).isEqualTo(500);
+        m.addFirst(40);
+        m.addFirst(40);
+        assertThat(m.max()).isEqualTo(500);
+        m.addLast(666);
+        assertThat(m.max()).isEqualTo(666);
+    }
+
 }

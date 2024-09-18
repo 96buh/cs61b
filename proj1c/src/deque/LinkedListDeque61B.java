@@ -45,8 +45,8 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
             if (this.size != otherLinkedList.size) {
                 return false;
             }
-            Iterator it1 = this.iterator();
-            Iterator it2 = otherLinkedList.iterator();
+            Iterator<T> it1 = this.iterator();
+            Iterator<?> it2 = otherLinkedList.iterator();
             while(it1.hasNext() && it2.hasNext()) {
                 if (it1.next() != it2.next()) {
                     return false;
@@ -57,18 +57,19 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return this.toList().toString();
+    }
+
     public static void main(String[] args) {
         Deque61B<String> S1 = new LinkedListDeque61B<>();
-        Deque61B<String> S2 = new LinkedListDeque61B<>();
 
-        S1.addLast("first");
+        S1.addLast("front");
         S1.addLast("middle");
         S1.addLast("back");
 
-        S2.addLast("back");
-        S2.addLast("middle");
-        S2.addLast("first");
-        boolean output = S1.equals(S2);
+        String output = S1.toString();
         System.out.println(output);
     }
 
@@ -111,7 +112,6 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
     @Override
     public List<T> toList() {
         List<T> returnList = new ArrayList<>();
-
         Node p = sentinel.next;
         while (p != sentinel && p != null) {
             returnList.add(p.item);

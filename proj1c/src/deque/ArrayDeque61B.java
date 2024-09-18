@@ -11,23 +11,26 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     private int size;
 
     public ArrayDeque61B() {
+        this(1);
+    }
+    public ArrayDeque61B(int capacity) {
         size = 0;
-        items = (T[]) new Object[8];
+        items = (T[]) new Object[capacity];
         nextFirst = 4;
         nextLast = 5;
     }
 
     @Override
-    public void addFirst(Object x) {
+    public void addFirst(T x) {
         if (size == items.length) {
             resize(size * 2);
         }
 
         if (nextFirst - 1 < 0) {
-            items[nextFirst] = (T) x;
+            items[nextFirst] = x;
             nextFirst = Math.floorMod(nextFirst - 1, items.length);
         } else {
-            items[nextFirst] = (T) x;
+            items[nextFirst] = x;
             nextFirst -= 1;
         }
 
@@ -35,11 +38,11 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     }
 
     @Override
-    public void addLast(Object x) {
+    public void addLast(T x) {
         if (size == items.length) {
             resize(size * 2);
         }
-        items[nextLast] = (T) x;
+        items[nextLast] = x;
         if (nextLast + 1 == items.length) {
             nextLast = Math.floorMod(nextLast + 1, items.length);
         } else {
@@ -187,7 +190,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 
         @Override
         public T next() {
-            if (witPos == items.length) {
+            if (witPos + 1 == items.length) {
                 witPos = Math.floorMod(witPos + 1, items.length);
             }
             T returnItem = items[witPos];
@@ -199,15 +202,14 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
         if (other instanceof ArrayDeque61B<?> otherArrayList) {
             if (this.size != otherArrayList.size) {
                 return false;
             }
-            for (int i = 0; i < size; i++) {
-                if (this.items[i] != otherArrayList.items[i]) {
+            Iterator<T> it1 = this.iterator();
+            Iterator<?> it2 = otherArrayList.iterator();
+            while(it1.hasNext() && it2.hasNext()) {
+                if (it1.next() != it2.next()) {
                     return false;
                 }
             }
@@ -216,22 +218,8 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
         return false;
     }
 
-    public static void main(String[] args) {
-        Deque61B<String> S1 = new ArrayDeque61B<>();
-        S1.addLast("front");
-        S1.addLast("middle");
-        S1.addLast("back");
-
-        Deque61B<String> S2 = new ArrayDeque61B<>();
-        S2.addLast("front");
-        S2.addLast("middle");
-        S2.addLast("back");
-        for (Object i : S2) {
-            System.out.println(i);
-        }
+    @Override
+    public String toString() {
+        return this.toList().toString();
     }
-
-
-
-
 }

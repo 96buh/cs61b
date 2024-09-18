@@ -59,7 +59,7 @@ public class TestGuitarString  {
     public void testTicCalculations() {
         // Create a GuitarString of frequency 11025, which
         // is a Deque61B of length 4.
-        GuitarString s = new GuitarString(11025);
+        GuitarString s = new GuitarString(11025.0);
         s.pluck();
 
         // Record the front four values, ticcing as we go.
