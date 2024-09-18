@@ -168,7 +168,46 @@ public class ArrayDeque61B<T> implements Deque61B {
     }
 
     @Override
-    public Iterator iterator() {
-        return null;
+    public Iterator<T> iterator() {
+        return new ArrayListIterator();
     }
+
+    private class ArrayListIterator implements Iterator<T> {
+        private int witPos;
+        private int counter;
+
+        public ArrayListIterator() {
+            witPos = nextFirst + 1;
+            counter = 0;
+        }
+        @Override
+        public boolean hasNext() {
+            return counter < size;
+        }
+
+        @Override
+        public T next() {
+            if (witPos == items.length) {
+                witPos = Math.floorMod(witPos + 1, items.length);
+            }
+            T returnItem = items[witPos];
+            witPos += 1;
+            counter += 1;
+            return returnItem;
+        }
+    }
+
+    public static void main(String[] args) {
+        Deque61B<String> S = new ArrayDeque61B<>();
+        S.addLast("First");
+        S.addLast("middle");
+        S.addLast("back");
+        for (Object i : S) {
+            System.out.println(i);
+        }
+    }
+
+
+
+
 }

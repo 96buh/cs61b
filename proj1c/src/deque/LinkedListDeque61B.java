@@ -40,12 +40,11 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
     }
 
     public static void main(String[] args) {
-        LinkedListDeque61B<Integer> S = new LinkedListDeque61B<>();
-        S.addLast(10);
-        S.addLast(20);
-        S.addLast(30);
-        S.addFirst(100);
-        for (int i : S) {
+        Deque61B<String> S = new LinkedListDeque61B<>();
+        S.addLast("first");
+        S.addLast("middle");
+        S.addLast("back");
+        for (String i : S) {
             System.out.println(i);
         }
     }
