@@ -1,8 +1,7 @@
-import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PercolationTest {
 
@@ -79,8 +78,6 @@ public class PercolationTest {
         assertThat(p.percolates()).isTrue();
     }
 
-    // TODO: Using the given tests above as a template,
-    //       write some more tests and delete the fail() line
     @Test
     public void xyTo1DTest() {
         Percolation p1 = new Percolation(5);
@@ -114,6 +111,46 @@ public class PercolationTest {
         assertThat(p.isFull(2,2)).isTrue();
     }
 
+    @Test
+    public void numbersOfOpenSiteTest() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        assertThat(p.numberOfOpenSites()).isEqualTo(0);
+        p.open(3,4);
+        p.open(2,4);
+        p.open(2,2);
+        p.open(2,3);
+        p.open(0,2);
+        assertThat(p.numberOfOpenSites()).isEqualTo(5);
+    }
 
+    @Test
+    public void backwashTest() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        p.open(0,1);
+        p.open(1,1);
+        p.open(2,1);
+        p.open(3,1);
+        p.open(4,1);
+        assertThat(p.isFull(0, 1)).isTrue();
+        p.open(3,3);
+        assertThat(p.isFull(3,3)).isFalse();
+        p.open(4, 3);
+        assertThat(p.isFull(4, 3)).isFalse();
+    }
 
+    @Test
+    public void errorTest() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        Exception exception = assertThrows(Exception.class, () -> p.open(5,5));
+        assertEquals("超過sites大小", exception.getMessage());
+        exception = assertThrows(Exception.class, () -> p.isOpen(5,5));
+        assertEquals("超過sites大小", exception.getMessage());
+        exception = assertThrows(Exception.class, () -> p.isFull(5,5));
+        assertEquals("超過sites大小", exception.getMessage());
+        exception = assertThrows(Exception.class, () -> new Percolation(-10));
+        assertEquals("N must be greater than 0.", exception.getMessage());
+    }
 }
