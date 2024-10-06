@@ -1,3 +1,4 @@
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -81,8 +82,38 @@ public class PercolationTest {
     // TODO: Using the given tests above as a template,
     //       write some more tests and delete the fail() line
     @Test
-    public void yourFirstTestHere() {
-        fail("Did you write your own tests?");
+    public void xyTo1DTest() {
+        Percolation p1 = new Percolation(5);
+        assertThat(p1.xyTo1D(3,0)).isEqualTo(15);
+        assertThat(p1.xyTo1D(3,4)).isEqualTo(19);
+        Percolation p2 = new Percolation(4);
+        assertThat(p2.xyTo1D(3,0)).isEqualTo(12);
+        assertThat(p2.xyTo1D(2,2)).isEqualTo(10);
     }
+
+    @Test
+    public void isOpenTest() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        assertThat(p.isOpen(2,2)).isFalse();
+        p.open(2,2);
+        assertThat(p.isOpen(2,2)).isTrue();
+    }
+
+    @Test
+    public void isFullTest() {
+        int N = 5;
+        Percolation p = new Percolation(N);
+        p.open(3,4);
+        p.open(2,4);
+        p.open(2,2);
+        p.open(2,3);
+        p.open(0,2);
+        assertThat(p.isFull(2,2)).isFalse();
+        p.open(1,2);
+        assertThat(p.isFull(2,2)).isTrue();
+    }
+
+
 
 }
