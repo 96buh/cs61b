@@ -20,7 +20,21 @@ public class GameLogic {
      */
     public static int moveTileUpAsFarAsPossible(int[][] board, int r, int c, int minR) {
         // TODO: Fill this in in tasks 2, 3, 4
-        return 0;
+        if (r == 0) { // 因為r=0已經是最上面了，不需要再往上移動，return 0(沒有合併)
+            return 0;
+        } else if (board[r-1][c] != 0) { // 上面的值不為零，用於之後判斷是否合併
+            if ((board[r - 1][c] == board[r][c]) && r > minR) { // 當有連續兩個row有一樣的，並且r > minR才能合併
+                board[r - 1][c] += board[r][c];
+                board[r][c] = 0;
+                return 1 + r - 1;
+            }
+            return 0; // 遇到不同的數字擋住無法往上移動
+        } else if (minR == r) { // 如果minR和r一樣就代表指定的(r,c)不能往上移動
+            return 0;
+        }
+        board[r-1][c] = board[r][c];
+        board[r][c] = 0;
+        return moveTileUpAsFarAsPossible(board, r-1, c, minR);
     }
 
     /**
