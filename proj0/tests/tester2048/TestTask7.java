@@ -401,5 +401,29 @@ public class TestTask7 {
         };
         assertWithMessage("Boards should match:").that(boardToString(board)).isEqualTo(boardToString(expected));
     }
+    /** Move non-adjacent tiles left (no merging). */
+    @Test
+    @Tag("task7")
+    @Order(16)
+    @DisplayName("3個相同tiles合併")
+    @GradedTest(number = "7.15")
+    public void testDownMergeThreeTiles() {
+        int[][] board = new int[][]{
+                {0, 0, 0, 0},
+                {0, 2, 0, 0},
+                {0, 2, 0, 0},
+                {0, 2, 0, 0},
+        };
+
+        GameLogic.tilt(board, Side.NORTH);
+
+        int[][] expected = new int[][]{
+                {0, 4, 0, 0},
+                {0, 2, 0, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+        };
+        assertWithMessage("Boards should match:").that(boardToString(board)).isEqualTo(boardToString(expected));
+    }
 }
 

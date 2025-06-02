@@ -119,4 +119,29 @@ public class TestTask5 {
 
         assertWithMessage("Boards should match:").that(TestUtils.boardToString(board)).isEqualTo(TestUtils.boardToString(expected));
    }
+
+    @Test
+    @Tag("task5")
+    @Order(5)
+    @DisplayName("3個相同tiles")
+    @GradedTest(number = "5.4")
+    public void testMergeWithThreeTiles() {
+        int[][] board = new int[][]{
+                {0, 0, 0, 0},
+                {0, 0, 2, 0},
+                {0, 0, 2, 0},
+                {0, 0, 2, 0},
+        };
+
+        GameLogic.tiltColumn(board, 2);
+
+        int[][] expected = new int[][]{
+                {0, 0, 4, 0},
+                {0, 0, 2, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+        };
+
+        assertWithMessage("Boards should match:").that(TestUtils.boardToString(board)).isEqualTo(TestUtils.boardToString(expected));
+    }
 }

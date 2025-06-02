@@ -19,10 +19,9 @@ public class GameLogic {
      *              if no merge occurs, then return 0.
      */
     public static int moveTileUpAsFarAsPossible(int[][] board, int r, int c, int minR) {
-        // TODO: Fill this in in tasks 2, 3, 4
         if (r == 0) { // 因為r=0已經是最上面了，不需要再往上移動，return 0(沒有合併)
             return 0;
-        } else if (board[r-1][c] != 0) { // 上面的值不為零，用於之後判斷是否合併
+        } else if (board[r - 1][c] != 0) { // 上面的值不為零，用於之後判斷是否合併
             if ((board[r - 1][c] == board[r][c]) && r > minR) { // 當有連續兩個row有一樣的，並且r > minR才能合併
                 board[r - 1][c] += board[r][c];
                 board[r][c] = 0;
@@ -32,9 +31,9 @@ public class GameLogic {
         } else if (minR == r) { // 如果minR和r一樣就代表指定的(r,c)不能往上移動
             return 0;
         }
-        board[r-1][c] = board[r][c];
+        board[r - 1][c] = board[r][c];
         board[r][c] = 0;
-        return moveTileUpAsFarAsPossible(board, r-1, c, minR);
+        return moveTileUpAsFarAsPossible(board, r - 1, c, minR);
     }
 
     /**
@@ -45,8 +44,18 @@ public class GameLogic {
      * @param c         the column to tilt up.
      */
     public static void tiltColumn(int[][] board, int c) {
-        // TODO: fill this in in task 5
-        return;
+        int top = 0;
+        int out;
+        for (int i = 0; i < board.length; i++) {
+            // 看往上移動有沒有合併
+            out = moveTileUpAsFarAsPossible(board, i, c, top);
+            // 合併完後上面還有一個空格可以移動，把最高可以移動到的row限制為merge發生的row
+            if (out != 0 && board[i - 1][c] == 0) {
+                top = out - 1;
+            } else if (out != 0) { // 發生合併但上面不為0(上面已經有數字擋住了)
+                top = i;
+            }
+        }
     }
 
     /**
@@ -55,8 +64,9 @@ public class GameLogic {
      * @param board     the current state of the board.
      */
     public static void tiltUp(int[][] board) {
-        // TODO: fill this in in task 6
-        return;
+        for (int i = 0; i < board.length; i++) {
+            tiltColumn(board, i);
+        }
     }
 
     /**
@@ -67,15 +77,23 @@ public class GameLogic {
      * @param side  the direction to tilt
      */
     public static void tilt(int[][] board, Side side) {
-        // TODO: fill this in in task 7
+        // 把所有棋盤都變成往上移的形式
         if (side == Side.EAST) {
-            return;
+            rotateLeft(board);
+            tiltUp(board);
+            rotateRight(board);
         } else if (side == Side.WEST) {
-            return;
+            rotateRight(board);
+            tiltUp(board);
+            rotateLeft(board);
         } else if (side == Side.SOUTH) {
-            return;
+            rotateRight(board);
+            rotateRight(board);
+            tiltUp(board);
+            rotateRight(board);
+            rotateRight(board);
         } else {
-            return;
+            tiltUp(board);
         }
     }
 }
