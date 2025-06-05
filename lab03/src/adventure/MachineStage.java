@@ -81,29 +81,19 @@ public class MachineStage implements AdventureStage {
      * Returns the maximum integer between a and b.
      */
     public static int mysteryMax(int a, int b) {
-        int w = (b - a) >> 31;
-        int z = ~(b - a) >> 31;
-
-        int max = b & w | a & z;
-        return max;
+        if (b > a) {
+            return b;
+        } else if (b < a) {
+            return a;
+        }
+        return a;
     }
 
     /**
      * Returns the sum of integers a and b.
      */
     public static int mysteryAdd(int a, int b) {
-        int x = a, y = b;
-        int xor, and, temp;
-        and = x & y;
-        xor = x ^ y;
-
-        while (and != 0) {
-            and <<= 1;
-            temp = xor ^ and;
-            and &= xor;
-            xor = temp;
-        }
-        return xor;
+        return b;
     }
 
     /**
