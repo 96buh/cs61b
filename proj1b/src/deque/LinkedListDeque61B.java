@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LinkedListDeque61B<T> implements Deque61B<T> {
-    public class LinkedListNode {
-        public T item;
-        public LinkedListNode prev;
-        public LinkedListNode next;
-        public LinkedListNode(T i, LinkedListNode p, LinkedListNode n) {
+    private class LinkedListNode {
+        private final T item;
+        private LinkedListNode prev;
+        private LinkedListNode next;
+        private LinkedListNode(T i, LinkedListNode p, LinkedListNode n) {
             item = i;
             prev = p;
             next = n;
@@ -16,8 +16,8 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
     }
 
     // 宣告instance variable(sentinel)
-    public LinkedListNode sentinel;
-    public int size;
+    private final LinkedListNode sentinel;
+    private int size;
 
     public LinkedListDeque61B() {
         sentinel = new LinkedListNode(null, null, null);
