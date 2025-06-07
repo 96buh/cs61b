@@ -1,9 +1,62 @@
 package deque;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class LinkedListDeque61B<T> implements Deque61B<T> {
+    @Override
+    public Iterator<T> iterator() {
+        return new LinkedListIterator();
+    }
+    private class LinkedListIterator implements Iterator<T> {
+        private LinkedListNode wizPos;
+
+        LinkedListIterator() {
+            wizPos = sentinel.next;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return wizPos != sentinel;
+        }
+
+        @Override
+        public T next() {
+            T returnItem = wizPos.item;
+            wizPos = wizPos.next;
+            return returnItem;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return this.toList().toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o instanceof LinkedListDeque61B otherLinkedList) {
+            if (this.size != otherLinkedList.size) {
+                return false;
+            }
+            LinkedListNode p = sentinel.next;
+            LinkedListNode otherNode = otherLinkedList.sentinel.next;
+            while (p != sentinel) {
+                if (p.item != otherNode.item) {
+                    return false;
+                }
+                p = p.next;
+                otherNode = otherNode.next;
+            }
+            return true;
+        }
+        return false;
+    }
+
     private class LinkedListNode {
         private final T item;
         private LinkedListNode prev;

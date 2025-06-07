@@ -1,6 +1,7 @@
 package deque;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ArrayDeque61B<T> implements Deque61B<T> {
@@ -132,5 +133,75 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     @Override
     public T getRecursive(int index) {
         throw new UnsupportedOperationException("No need to implement getRecursive for proj 1b");
+    }
+
+    @Override
+    public String toString() {
+        return this.toList().toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o instanceof ArrayDeque61B<?> otherArrayList) {
+            if (this.size != otherArrayList.size) {
+                return false;
+            }
+            /* 不同的ArrayList儲存的東西開頭所在的index可能會不一樣
+            *  i 是this的index(nextFist + 1)
+            *  j 是otherArrayList的index(otherArrayList.nextFirst + 1)
+            */
+            int i = this.nextFirst + 1;
+            int j = otherArrayList.nextFirst + 1;
+            for (int k = 0; k < size; k++) {
+                // 避免oob
+                if (i > this.items.length) {
+                    i = whereToPlace(i, this.items.length);
+                } else if (j > otherArrayList.items.length) {
+                    j = whereToPlace(j, otherArrayList.items.length);
+                }
+
+                if (this.items[i] != otherArrayList.items[j]) {
+                    return false;
+                }
+                i += 1;
+                j += 1;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayIterator();
+    }
+
+    private class ArrayIterator implements Iterator<T> {
+        private int wizPos;
+        private int counter;
+        ArrayIterator() {
+            // wizPos是ArrayList中的第一個item的index
+            wizPos = nextFirst + 1;
+            counter = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return counter < size;
+        }
+
+        @Override
+        public T next() {
+            if (wizPos + 1 > items.length) {
+                wizPos = whereToPlace(wizPos, items.length);
+            }
+            T returnItem = items[wizPos];
+            wizPos += 1;
+            counter += 1;
+            return returnItem;
+        }
     }
 }

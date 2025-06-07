@@ -274,4 +274,54 @@ public class ArrayDeque61BTest {
         a.removeLast();
         assertThat(a.toList()).containsExactly(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30).inOrder();
     }
+
+    @Test
+    public void arrayListIteratorTest() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        a.addFirst(10);
+        a.addFirst(20);
+        a.addFirst(30); // [30, 20, 10]
+        a.addLast(5);
+        a.addLast(12);
+        a.addLast(17);
+        a.addLast(23);
+        for (int i : a) {
+            System.out.println(i);
+        }
+    }
+
+
+    @Test
+    public void equalsArrayListDeque61BTest() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        ArrayDeque61B<Integer> b = new ArrayDeque61B<>();
+        a.addFirst(30);
+        a.addFirst(20);
+        a.addFirst(10);
+
+        b.addLast(10);
+        b.addLast(20);
+        b.addLast(30);
+        assertThat(a.equals(b)).isTrue();
+
+        a.addLast(123);
+        assertThat(b.equals(a)).isFalse();
+    }
+
+    @Test
+    public void equalsEmptyArrayListTest() {
+        ArrayDeque61B<Integer> a = new ArrayDeque61B<>();
+        ArrayDeque61B<Integer> b = new ArrayDeque61B<>();
+        assertThat(a.equals(b)).isTrue();
+    }
+
+    @Test
+    public void toStringTest() {
+        ArrayDeque61B<String> a = new ArrayDeque61B<>();
+        a.addLast("front");
+        a.addLast("middle");
+        a.addLast("back");
+        assertThat(a.toString()).isEqualTo("[front, middle, back]");
+    }
+
 }
