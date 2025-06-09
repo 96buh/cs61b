@@ -114,4 +114,78 @@ public class TestBSTMap {
         assertThat(b.get("b")).isEqualTo("provolone");
     }
 
+    @Test
+    public void putTest() {
+        BSTMap<String, String> b = new BSTMap<>();
+
+        b.put("d", "parmesan");
+        b.put("a", "mozzarella");
+        b.put("c", "swiss");
+        b.put("b", "pepper jack");
+        b.put("e", "gouda");
+        b.put("c", "coke"); // key c的value變成coke
+    }
+
+    @Test
+    public void getTest() {
+        BSTMap<String, String> b = new BSTMap<>();
+
+        assertThat(b.get("b")).isNull();
+
+        b.put("d", "parmesan");
+        b.put("a", "mozzarella");
+        b.put("c", "swiss");
+        b.put("b", "pepper jack");
+        b.put("e", "gouda");
+
+        assertThat(b.get("b")).isEqualTo("pepper jack");
+        assertThat(b.get("c")).isEqualTo("swiss");
+        b.put("c", "coke");
+        assertThat(b.get("c")).isEqualTo("coke");
+    }
+
+    @Test
+    public void containKeyTest() {
+        BSTMap<String, String> b = new BSTMap<>();
+
+        b.put("d", "parmesan");
+        b.put("a", "mozzarella");
+        b.put("c", "swiss");
+        b.put("b", "pepper jack");
+        b.put("e", "gouda");
+
+        assertThat(b.containsKey("b")).isTrue();
+    }
+
+    @Test
+    public void sizeTest() {
+        BSTMap<String, String> b = new BSTMap<>();
+
+        b.put("d", "parmesan");
+        b.put("a", "mozzarella");
+        b.put("c", "swiss");
+        b.put("b", "pepper jack");
+        b.put("e", "gouda");
+
+        assertThat(b.size()).isEqualTo(5);
+        b.put("c", "coke");
+        assertThat(b.size()).isEqualTo(5);
+    }
+
+    @Test
+    public void clearTest() {
+        BSTMap<String, String> b = new BSTMap<>();
+
+        b.put("d", "parmesan");
+        b.put("a", "mozzarella");
+        b.put("c", "swiss");
+        b.put("b", "pepper jack");
+        b.put("e", "gouda");
+
+        b.clear();
+
+        b.put("c", "swiss");
+        b.put("b", "pepper jack");
+        b.put("e", "gouda");
+    }
 }
