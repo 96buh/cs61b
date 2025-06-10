@@ -1,5 +1,4 @@
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import org.junit.Test;
 
@@ -66,11 +65,14 @@ public class TestBSTMapExtra {
         q.put("a","a");
         q.put("d","a");
         q.put("e","a");                         // a b c d e
+        assertThat(q.containsKey("e")).isTrue();
         assertThat(q.remove("e")).isNotNull();      // a b c d
         assertThat(q.containsKey("a")).isTrue();
         assertThat(q.containsKey("b")).isTrue();
         assertThat(q.containsKey("c")).isTrue();
         assertThat(q.containsKey("d")).isTrue();
+        assertThat(q.containsKey("e")).isFalse();
+
         assertThat(q.remove("c")).isNotNull();      // a b d
         assertThat(q.containsKey("a")).isTrue();
         assertThat(q.containsKey("b")).isTrue();
@@ -114,4 +116,23 @@ public class TestBSTMapExtra {
         assertThat(noChild.get('Z')).isNull();
     }
 
+    @Test
+    public void iteratorTest() {
+        BSTMap<Integer, String> bst = new BSTMap<>();
+        List<Integer> out = new ArrayList<>();
+        bst.put(10, "a");
+        bst.put(8, "a");
+        bst.put(6, "a");
+        bst.put(9, "a");
+        bst.put(20, "a");
+        bst.put(15, "a");
+        bst.put(22, "a");
+        bst.put(1, "a");
+        bst.put(30, "a");
+        List<Integer> expected = new ArrayList<>(Arrays.asList(1, 6, 8, 9, 10, 15, 20, 22, 30));
+        for (int i : bst) {
+            out.add(i);
+        }
+        assertThat(out).containsExactlyElementsIn(expected).inOrder();
+    }
 }

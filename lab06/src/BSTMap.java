@@ -1,9 +1,10 @@
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     private class BSTNode {
-        private final K key;
+        private K key;
         private V value;
         private BSTNode left;
         private BSTNode right;
@@ -17,6 +18,8 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     private BSTNode root;
     private int size = 0;
+    private Set<K> keySet;
+    private V removedNodeValue = null;
 
 
     /**
@@ -59,13 +62,16 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        if (root == null) {
+        if (!containsKey(key)) {
             return null;
         }
         BSTNode getNode = get(root, key);
         return getNode.value;
     }
 
+    /**
+     * 得到特定key的節點
+     */
     private BSTNode get(BSTNode node, K key) {
         if (node == null) {
             return null;
@@ -89,6 +95,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             return false;
         }
         BSTNode getNode = get(root, key);
+        if (getNode == null) {
+            return false;
+        }
         return getNode.key != null;
     }
 
@@ -115,7 +124,21 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        keySet = new TreeSet<>();
+        inOrder(root);
+        return keySet;
+    }
+
+    /**
+     * BST使用inOrder可以從小到大遍歷
+     */
+    private void inOrder(BSTNode node) {
+        if (node == null) {
+            return;
+        }
+        inOrder(node.left);
+        keySet.add(node.key);
+        inOrder(node.right);
     }
 
     /**
@@ -128,16 +151,87 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        if (!containsKey(key)) {
+            return null;
+        }
+        root = remove(root, key);
+        size -= 1;
+        return removedNodeValue;
     }
+
+    private BSTNode remove(BSTNode node, K key) {
+        if (node == null) {
+            return null;
+        }
+        if (key.compareTo(node.key) > 0) {
+            node.right = remove(node.right, key);
+        } else if (key.compareTo(node.key) < 0) {
+            node.left = remove(node.left, key);
+        } else {
+            if (node.left == null) {
+                removedNodeValue = node.value;
+                return node.right;
+            }
+            if (node.right == null) {
+                removedNodeValue = node.value;
+                return node.left;
+            }
+            BSTNode maxNode = findMaxInLeftTree(node.left);
+            removedNodeValue = node.value;
+            node.key = maxNode.key;
+            node.value = maxNode.value;
+            node.left = remove(node.left, maxNode.key);
+        }
+        return node;
+    }
+
+    private BSTNode findMaxInLeftTree(BSTNode node) {
+        while (node != null && node.right != null) {
+            node = node.right;
+        }
+        return node;
+    }
+
 
     /**
      * Returns an iterator over elements of type {@code T}.
-     *
+     * return an iterator over the keys, in sorted order
      * @return an Iterator.
      */
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return new BSTIterator();
+    }
+
+    private class BSTIterator implements Iterator<K> {
+        private int wizPos;
+        private int counter;
+        private final K[] keyArray;
+
+        BSTIterator() {
+            wizPos = 0;
+            counter = 0;
+            keyArray = (K[]) new Comparable[size];
+            nextHelper(root);
+        }
+        @Override
+        public boolean hasNext() {
+            return wizPos < size;
+        }
+        @Override
+        public K next() {
+            K returnKey = keyArray[wizPos];
+            wizPos += 1;
+            return returnKey;
+        }
+        private void nextHelper(BSTNode node) {
+            if (node == null) {
+                return;
+            }
+            nextHelper(node.left);
+            keyArray[counter] = node.key;
+            counter += 1;
+            nextHelper(node.right);
+        }
     }
 }
