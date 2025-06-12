@@ -121,8 +121,8 @@ public class TimeSeriesTest {
         assertThat(totalPopulation.years()).isEqualTo(expectedYear);
 
         List<Double> expectedData = new ArrayList<>();
-        expectedData.add(0.05);
-        expectedData.add(4.0);
+        expectedData.add(0.05); // 100 / 2000
+        expectedData.add(4.0); // 200 / 50
 
         for (int i = 0; i < expectedData.size(); i += 1) {
             assertThat(totalPopulation.data().get(i)).isWithin(1E-10).of(expectedData.get(i));
