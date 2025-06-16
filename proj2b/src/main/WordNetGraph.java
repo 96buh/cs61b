@@ -71,12 +71,12 @@ public class WordNetGraph {
         }
     }
 
-    public String getWord(int id) {
+    private String getWord(int id) {
         return idToWords.get(id);
     }
 
     /* 根據輸入的word(String)得到他的snyset ID */
-    public Set<Integer> getSynsetID(String word) {
+    private Set<Integer> getSynsetID(String word) {
         return wordToIDs.get(word);
     }
 
@@ -85,6 +85,9 @@ public class WordNetGraph {
      *       當輸入"change"會返回[1, 2] (因為"change alteration modification"也含有change)
      */
     private Set<Integer> getHyponymsIDs(String word) {
+        if (word.contains(",")) { // 如果word最後是,就去除掉
+            word = removeLastChar(word);
+        }
         Set<Integer> returnIDs = new HashSet<>();
         Set<Integer> wordIDs = getSynsetID(word);
         for (int id : wordIDs) {
@@ -95,8 +98,11 @@ public class WordNetGraph {
     }
 
     // 將輸入的synset ids轉換成words
-    private String idsToWords(Set<Integer> IDs) {
+    private Set<String> idsToWords(Set<Integer> IDs) {
         Set<String> wordSet = new TreeSet<>();
+        if (IDs == null) {
+            return wordSet;
+        }
         for (int id : IDs) {
             String word = getWord(id);
             if (word.split(" ").length != 1) {
@@ -105,11 +111,29 @@ public class WordNetGraph {
                 wordSet.add(word);
             }
         }
-        return wordSet.toString();
+        return wordSet;
     }
 
-    public String hyponyms(String word) {
-        Set<Integer> hyponymsIDs = getHyponymsIDs(word);
-        return idsToWords(hyponymsIDs);
+    /* 可以接收list of words找到他們的交集
+    *  返回取完交集後的set
+    */
+    public Set<String> hyponyms(List<String> words) {
+        Set<Integer> intersectionSet = null;
+        Set<String> result;
+
+        for (String w : words) {
+            Set<Integer> wordIDSet = getHyponymsIDs(w);
+            if (intersectionSet == null) {
+                intersectionSet = wordIDSet;
+            }
+            intersectionSet.retainAll(wordIDSet);
+        }
+        result = idsToWords(intersectionSet);
+        return result;
+    }
+
+    private String removeLastChar(String s) {
+        s = s.substring(0, s.length() - 1);
+        return s;
     }
 }
