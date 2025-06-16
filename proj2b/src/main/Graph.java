@@ -26,4 +26,9 @@ public class Graph {
     public Iterable<Integer> adj(int v) {
         return adj[v];
     }
+
+    // 返回graph有多少個vertices
+    public int size() {
+        return this.V;
+    }
 }
