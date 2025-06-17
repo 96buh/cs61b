@@ -8,9 +8,7 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
     // ngrams files
-    public static final String VERY_SHORT_WORDS_FILE = "data/ngrams/very_short.csv";
     public static final String TOTAL_COUNTS_FILE = "data/ngrams/total_counts.csv";
-    private static final String SMALL_WORDS_FILE = "data/ngrams/top_14377_words.csv";
     private static final String WORDS_FILE = "data/ngrams/top_49887_words.csv";
     private static final String RANDOM_WORDS_25 = "data/ngrams/random_freq_25.csv";
     private static final String RANDOM_WORDS_10 = "data/ngrams/random_freq_10.csv";
@@ -38,13 +36,13 @@ public class Main {
     public static void main(String[] args) {
         NgordnetServer hns = new NgordnetServer();
 
-        WordNetGraph WNG = new WordNetGraph(SYNSETS_EECS_FILE, HYPONYMS_EECS_FILE);
-        NGramMap NGM = new NGramMap(FREQUENCY_EECS_FILE, TOTAL_COUNTS_FILE);
+        WordNetGraph wng = new WordNetGraph(LARGE_SYNSET_FILE, LARGE_HYPONYM_FILE);
+        NGramMap ngm = new NGramMap(WORDS_FILE, TOTAL_COUNTS_FILE);
 
         hns.startUp();
         hns.register("history", new DummyHistoryHandler());
         hns.register("historytext", new DummyHistoryTextHandler());
-        hns.register("hyponyms", new HyponymsHandler(WNG, NGM));
+        hns.register("hyponyms", new HyponymsHandler(wng, ngm));
 
         System.out.println("Finished server startup! Visit http://localhost:4567/ngordnet.html");
     }

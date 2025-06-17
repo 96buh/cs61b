@@ -5,17 +5,16 @@ import edu.princeton.cs.algs4.In;
 import java.util.*;
 
 public class WordNetGraph {
-    private Graph wordNetGraph;
-    private Map<String, Set<Integer>> wordToIDs;
-    private Map<Integer, String> idToWords;
-    private int V;
+    private final Graph wordNetGraph;
+    private final Map<String, Set<Integer>> wordToIDs;
+    private final Map<Integer, String> idToWords;
 
     public WordNetGraph(String synsetFile, String hyponymsFile) {
         wordToIDs = new HashMap<>();
         idToWords = new HashMap<>();
 
-        this.V = readSynset(synsetFile);
-        wordNetGraph = new Graph(this.V);
+        int v = readSynset(synsetFile);
+        wordNetGraph = new Graph(v);
 
         readHyponyms(hyponymsFile);
     }
@@ -40,17 +39,17 @@ public class WordNetGraph {
                     if (wordToIDs.containsKey(s)) {
                         wordToIDs.get(s).add(synsetID);
                     } else {
-                        Set<Integer> IDs = new HashSet<>();
-                        IDs.add(synsetID);
-                        wordToIDs.put(s, IDs);
+                        Set<Integer> ids = new HashSet<>();
+                        ids.add(synsetID);
+                        wordToIDs.put(s, ids);
                     }
                 }
             } else if (wordToIDs.containsKey(word)) {
                 wordToIDs.get(word).add(synsetID);
             } else {
-                Set<Integer> IDs = new HashSet<>();
-                IDs.add(synsetID);
-                wordToIDs.put(word, IDs);
+                Set<Integer> ids = new HashSet<>();
+                ids.add(synsetID);
+                wordToIDs.put(word, ids);
             }
             idToWords.put(synsetID, word);
             vertices += 1;
@@ -90,6 +89,9 @@ public class WordNetGraph {
         }
         Set<Integer> returnIDs = new HashSet<>();
         Set<Integer> wordIDs = getSynsetID(word);
+        if (wordIDs == null) {
+            return returnIDs;
+        }
         for (int id : wordIDs) {
             DepthFirstPaths dfs = new DepthFirstPaths(wordNetGraph, id);
             returnIDs.addAll(dfs.verticesThatHasVisited());
@@ -98,12 +100,12 @@ public class WordNetGraph {
     }
 
     // 將輸入的synset ids轉換成words
-    private Set<String> idsToWords(Set<Integer> IDs) {
+    private Set<String> idsToWords(Set<Integer> ids) {
         Set<String> wordSet = new TreeSet<>();
-        if (IDs == null) {
+        if (ids == null) {
             return wordSet;
         }
-        for (int id : IDs) {
+        for (int id : ids) {
             String word = getWord(id);
             if (word.split(" ").length != 1) {
                 Collections.addAll(wordSet, word.split(" "));
